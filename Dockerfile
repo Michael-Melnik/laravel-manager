@@ -1,4 +1,4 @@
-#FROM richarvey/nginx-php-fpm:1.9.1
+FROM richarvey/nginx-php-fpm:1.9.1
 
 FROM node:20.3.1-alpine3.17 AS nodejs
 FROM tangramor/nginx-php8-fpm:php8.2.7_withoutNodejs
