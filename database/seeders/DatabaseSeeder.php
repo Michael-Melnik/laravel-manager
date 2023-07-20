@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(10)->create();
+//        User::factory(10)->create();
 
         $statuses =  Yaml::parseFile(database_path('statuses.yml'));
         foreach ($statuses as $status) {
@@ -30,24 +30,24 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        $tasks = Yaml::parseFile(database_path('tasks.yml'));
-        foreach ($tasks as $task) {
-            Task::firstOrCreate([
-                'name' => $task['name'],
-                'description' => $task['description'],
-                'status_id' => TaskStatus::inRandomOrder()->first()->id,
-                'created_by_id' => User::inRandomOrder()->first()->id,
-                'assigned_to_id' => User::inRandomOrder()->first()->id,
-            ]);
-        }
-
-        $labelsCount = Label::count();
-        Task::all()->each(function ($task) use ($labelsCount) {
-            $labels = Label::inRandomOrder()
-                ->limit(rand(1, $labelsCount))
-                ->get();
-
-            $task->labels()->attach($labels);
-        });
+//        $tasks = Yaml::parseFile(database_path('tasks.yml'));
+//        foreach ($tasks as $task) {
+//            Task::firstOrCreate([
+//                'name' => $task['name'],
+//                'description' => $task['description'],
+//                'status_id' => TaskStatus::inRandomOrder()->first()->id,
+//                'created_by_id' => User::inRandomOrder()->first()->id,
+//                'assigned_to_id' => User::inRandomOrder()->first()->id,
+//            ]);
+//        }
+//
+//        $labelsCount = Label::count();
+//        Task::all()->each(function ($task) use ($labelsCount) {
+//            $labels = Label::inRandomOrder()
+//                ->limit(rand(1, $labelsCount))
+//                ->get();
+//
+//            $task->labels()->attach($labels);
+//        });
     }
 }
