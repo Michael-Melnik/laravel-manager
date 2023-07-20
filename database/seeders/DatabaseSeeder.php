@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
                 'assigned_to_id' => User::inRandomOrder()->first()->id,
             ]);
         }
-//
+
         $labelsCount = Label::count();
         Task::all()->each(function ($task) use ($labelsCount) {
             $labels = Label::inRandomOrder()
