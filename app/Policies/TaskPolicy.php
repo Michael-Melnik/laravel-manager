@@ -17,7 +17,7 @@ class TaskPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(?User $user)
+    public function viewAny(User $user)
     {
         return true;
     }
@@ -29,9 +29,9 @@ class TaskPolicy
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(?User $user, Task $task)
+    public function view(User $user, Task $task)
     {
-        return true;
+       return true;
     }
 
     /**
@@ -66,7 +66,7 @@ class TaskPolicy
      */
     public function delete(User $user, Task $task)
     {
-        return $user->id === $task->created_by_id;
+        return $task->created_by_id == $user->id;
     }
 
     /**

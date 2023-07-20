@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Symfony\Component\Yaml\Yaml;
+use App\Models\{TaskStatus, Task, Label, User};
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,6 +15,39 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        User::factory(10)->create();
+
+        $statuses =  Yaml::parseFile(database_path('statuses.yml'));
+        foreach ($statuses as $status) {
+            TaskStatus::firstOrCreate(['name' => $status]);
+        }
+
+        $labels = Yaml::parseFile(database_path('labels.yml'));
+        foreach ($labels as $label) {
+            Label::firstOrCreate([
+                'name' => $label['name'],
+                'description' => $label['description'],
+            ]);
+        }
+
+        $tasks = Yaml::parseFile(database_path('tasks.yml'));
+        foreach ($tasks as $task) {
+            Task::firstOrCreate([
+                'name' => $task['name'],
+                'description' => $task['description'],
+                'status_id' => TaskStatus::inRandomOrder()->first()->id,
+                'created_by_id' => User::inRandomOrder()->first()->id,
+                'assigned_to_id' => User::inRandomOrder()->first()->id,
+            ]);
+        }
+
+        $labelsCount = Label::count();
+        Task::all()->each(function ($task) use ($labelsCount) {
+            $labels = Label::inRandomOrder()
+                ->limit(rand(1, $labelsCount))
+                ->get();
+
+            $task->labels()->attach($labels);
+        });
     }
 }
